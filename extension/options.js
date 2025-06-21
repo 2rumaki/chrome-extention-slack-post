@@ -5,15 +5,15 @@
 // 保存ボタンが押された時の処理
 document.getElementById('save').addEventListener('click', async () => {
   const token = document.getElementById('token').value;
-  const channel = document.getElementById('channel').value;
-  const member = document.getElementById('member').value;
+  const channelId = document.getElementById('channel').value;
+  const memberId = document.getElementById('member').value;
 
   // ローカルストレージに保存する前に暗号化する
   const encToken = await encryptText(token);
-  const encChannel = await encryptText(channel);
-  const encMember = await encryptText(member);
+  const encChannelId = await encryptText(channelId);
+  const encMemberId = await encryptText(memberId);
 
-  chrome.storage.local.set({ token: encToken, channel: encChannel, member: encMember }, () => {
+  chrome.storage.local.set({ token: encToken, channel: encChannelId, member: encMemberId }, () => {
     const statusEl = document.getElementById('status');
     statusEl.textContent = 'Saved!';
     statusEl.style.color = '#28a745';
@@ -25,14 +25,14 @@ document.getElementById('save').addEventListener('click', async () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
   // 保存済みのトークン等を読み込んでフォームに表示
-  const { token, channel, member } = await loadCredentials();
+  const { token, channelId, memberId } = await loadCredentials();
   if (token) {
     document.getElementById('token').value = token;
   }
-  if (channel) {
-    document.getElementById('channel').value = channel;
+  if (channelId) {
+    document.getElementById('channel').value = channelId;
   }
-  if (member) {
-    document.getElementById('member').value = member;
+  if (memberId) {
+    document.getElementById('member').value = memberId;
   }
 });

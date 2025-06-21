@@ -5,12 +5,16 @@ async function loadCredentials() {
   });
   try {
     const token = items.token ? await decryptText(items.token) : null;
-    const channel = items.channel ? await decryptText(items.channel) : null;
-    const member = items.member ? await decryptText(items.member) : null;
-    return { token, channel, member };
+    const channelId = items.channel
+      ? await decryptText(items.channel)
+      : null;
+    const memberId = items.member
+      ? await decryptText(items.member)
+      : null;
+    return { token, channelId, memberId };
   } catch (e) {
     console.error('Failed to load credentials', e);
-    return { token: null, channel: null, member: null };
+    return { token: null, channelId: null, memberId: null };
   }
 }
 
