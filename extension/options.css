@@ -1,3 +1,4 @@
+/* オプションページ全体のスタイル */
 body {
   font-family: Arial, sans-serif;
   background-color: #f5f7fa;
@@ -7,6 +8,7 @@ body {
   height: 100vh;
   margin: 0;
 }
+/* 入力フォームを囲むコンテナ */
 #container {
   background: #fff;
   padding: 20px;
@@ -15,11 +17,13 @@ body {
   width: 320px;
   box-sizing: border-box;
 }
+/* ラベルのスタイル */
 label {
   display: block;
   margin-top: 10px;
   font-weight: bold;
 }
+/* テキスト入力欄のスタイル */
 input {
   width: 100%;
   padding: 8px;
@@ -28,6 +32,7 @@ input {
   border-radius: 4px;
   box-sizing: border-box;
 }
+/* 保存ボタンのスタイル */
 button {
   width: 100%;
   padding: 8px;
@@ -38,9 +43,11 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
+/* ボタンにマウスを乗せたときの色変更 */
 button:hover {
   background-color: #0056b3;
 }
+/* 保存完了メッセージの表示領域 */
 #status {
   display: block;
   margin-top: 10px;

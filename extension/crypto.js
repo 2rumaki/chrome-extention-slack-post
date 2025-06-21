@@ -1,11 +1,14 @@
+// Uint8Array を Base64 文字列へ変換するヘルパー
 function btoaBytes(bytes) {
   return btoa(String.fromCharCode(...bytes));
 }
 
+// Base64 文字列を Uint8Array に変換するヘルパー
 function atobBytes(str) {
   return Uint8Array.from(atob(str), c => c.charCodeAt(0));
 }
 
+// 生成済みの暗号鍵を取得する
 async function getStoredKey() {
   return new Promise((resolve) => {
     chrome.storage.local.get('encKey', (items) => {
@@ -14,12 +17,15 @@ async function getStoredKey() {
   });
 }
 
+// 暗号鍵を保存する
 async function setStoredKey(key) {
   return new Promise((resolve) => {
     chrome.storage.local.set({ encKey: key }, resolve);
   });
 }
 
+// 暗号処理に使用する鍵を取得する
+// 未生成の場合は新しく作成して保存する
 async function getKey() {
   const stored = await getStoredKey();
   let keyBytes;
@@ -32,6 +38,7 @@ async function getKey() {
   return crypto.subtle.importKey('raw', keyBytes, 'AES-GCM', false, ['encrypt', 'decrypt']);
 }
 
+// 文字列を AES-GCM で暗号化し Base64 文字列として返す
 async function encryptText(text) {
   const key = await getKey();
   const iv = crypto.getRandomValues(new Uint8Array(12));
@@ -46,6 +53,7 @@ async function encryptText(text) {
   return btoaBytes(result);
 }
 
+// encryptText で暗号化した文字列を復号する
 async function decryptText(str) {
   const data = atobBytes(str);
   const iv = data.slice(0, 12);

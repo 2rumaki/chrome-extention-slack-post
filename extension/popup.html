@@ -5,9 +5,15 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
+  <!-- URL とコメントを Slack に送信するポップアップ -->
   <div id="container">
+    <!-- コメント入力欄 -->
     <textarea id="comment" placeholder="Comment"></textarea>
+
+    <!-- 投稿ボタン -->
     <button id="send">Post to Slack</button>
+
+    <!-- 投稿結果表示エリア -->
     <div id="status"></div>
   </div>
   <script src="crypto.js"></script>

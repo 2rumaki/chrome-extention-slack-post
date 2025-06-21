@@ -1,3 +1,4 @@
+/* ポップアップ全体のスタイル */
 body {
   font-family: Arial, sans-serif;
   background-color: #f5f7fa;
@@ -5,11 +6,13 @@ body {
   width: 240px;
 }
 
+/* 入力エリアを囲むコンテナ */
 #container {
   padding: 15px;
   box-sizing: border-box;
 }
 
+/* コメント入力欄 */
 textarea {
   width: 100%;
   height: 80px;
@@ -20,6 +23,7 @@ textarea {
   resize: vertical;
 }
 
+/* 送信ボタン */
 button {
   width: 100%;
   padding: 8px;
@@ -31,10 +35,12 @@ button {
   cursor: pointer;
 }
 
+/* ボタンの hover 時のスタイル */
 button:hover {
   background-color: #0056b3;
 }
 
+/* 投稿結果メッセージの表示領域 */
 #status {
   display: block;
   margin-top: 10px;
