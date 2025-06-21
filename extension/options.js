@@ -4,8 +4,10 @@ document.getElementById('save').addEventListener('click', async () => {
   const encToken = await encryptText(token);
   const encChannel = await encryptText(channel);
   chrome.storage.local.set({ token: encToken, channel: encChannel }, () => {
-    document.getElementById('status').textContent = 'Saved!';
-    setTimeout(() => { document.getElementById('status').textContent = ''; }, 1500);
+    const statusEl = document.getElementById('status');
+    statusEl.textContent = 'Saved!';
+    statusEl.style.color = '#28a745';
+    setTimeout(() => { statusEl.textContent = ''; }, 1500);
   });
 });
 
