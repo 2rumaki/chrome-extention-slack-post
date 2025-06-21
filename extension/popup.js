@@ -33,7 +33,7 @@ document.getElementById('send').addEventListener('click', async () => {
           'Content-Type': 'application/json; charset=utf-8',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ channel, text: `*${url}*\n${comment}` })
+        body: JSON.stringify({ channel, text: `${url}\n${comment}` })
       });
       const data = await res.json();
       if (data.ok) {
