@@ -5,11 +5,17 @@
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
+  <!-- Slack の Bot トークンとチャンネル ID を設定するページ -->
   <div id="container">
+    <!-- Bot トークンの入力欄 -->
     <label>Slack Bot Token</label>
     <input id="token" type="password" placeholder="xoxb-..." />
+
+    <!-- チャンネル ID の入力欄 -->
     <label>Channel ID</label>
     <input id="channel" type="text" placeholder="C12345678" />
+
+    <!-- 設定を保存するボタン -->
     <button id="save">Save</button>
     <span id="status"></span>
   </div>
