@@ -23,7 +23,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Update manifest version
         run: |
-          jq --arg v "${{ steps.tag.outputs.new_tag }}" '.version = $v' extension/manifest.json > extension/manifest.tmp
+          TAG="${{ steps.tag.outputs.new_tag }}"
+          CLEANED_TAG="${TAG#v}"
+          jq --arg v "$CLEANED_TAG" '.version = $v' extension/manifest.json > extension/manifest.tmp
           mv extension/manifest.tmp extension/manifest.json
       - name: Commit updated manifest
         run: |
