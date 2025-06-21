@@ -10,37 +10,13 @@ document.getElementById('send').addEventListener('click', async () => {
   // 入力されたコメントを取得
   const comment = document.getElementById('comment').value;
 
-  // 保存されているトークン、チャンネル ID、メンバー ID を取得
-  chrome.storage.local.get(['token', 'channel', 'member'], async (items) => {
-    let token = null;
-    let channel = null;
-    let member = null;
-    if (items.token) {
-      try {
-        token = await decryptText(items.token);
-      } catch (e) {
-        console.error('Failed to decrypt token', e);
-      }
-    }
-    if (items.channel) {
-      try {
-        channel = await decryptText(items.channel);
-      } catch (e) {
-        console.error('Failed to decrypt channel', e);
-      }
-    }
-    if (items.member) {
-      try {
-        member = await decryptText(items.member);
-      } catch (e) {
-        console.error('Failed to decrypt member', e);
-      }
-    }
-    // 必要な情報が未設定の場合はエラー表示
-    if (!token || !channel || !member) {
-      statusEl.textContent = 'Set Slack token, channel and member in options.';
-      return;
-    }
+  // 保存されているトークン等を取得
+  const { token, channel, member } = await loadCredentials();
+  // 必要な情報が未設定の場合はエラー表示
+  if (!token || !channel || !member) {
+    statusEl.textContent = 'Set Slack token, channel and member in options.';
+    return;
+  }
     try {
       const mention = `<@${member}>`;
 
@@ -68,5 +44,4 @@ document.getElementById('send').addEventListener('click', async () => {
       console.error(e);
       statusEl.textContent = 'Failed to post.';
     }
-  });
 });

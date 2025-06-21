@@ -23,29 +23,16 @@ document.getElementById('save').addEventListener('click', async () => {
   });
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  // ページ読み込み時に保存済みの値を復号して入力欄に表示する
-  chrome.storage.local.get(['token', 'channel', 'member'], async (items) => {
-    if (items.token) {
-      try {
-        document.getElementById('token').value = await decryptText(items.token);
-      } catch (e) {
-        console.error('Failed to decrypt token', e);
-      }
-    }
-    if (items.channel) {
-      try {
-        document.getElementById('channel').value = await decryptText(items.channel);
-      } catch (e) {
-        console.error('Failed to decrypt channel', e);
-      }
-    }
-    if (items.member) {
-      try {
-        document.getElementById('member').value = await decryptText(items.member);
-      } catch (e) {
-        console.error('Failed to decrypt member', e);
-      }
-    }
-  });
+document.addEventListener('DOMContentLoaded', async () => {
+  // 保存済みのトークン等を読み込んでフォームに表示
+  const { token, channel, member } = await loadCredentials();
+  if (token) {
+    document.getElementById('token').value = token;
+  }
+  if (channel) {
+    document.getElementById('channel').value = channel;
+  }
+  if (member) {
+    document.getElementById('member').value = member;
+  }
 });
