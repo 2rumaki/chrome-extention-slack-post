@@ -34,6 +34,30 @@ document.getElementById('send').addEventListener('click', async () => {
       return;
     }
     try {
+      // Google アカウントのメールアドレスを取得
+      const userInfo = await new Promise((resolve) => {
+        chrome.identity.getProfileUserInfo(resolve);
+      });
+
+      let mention = '';
+      if (userInfo && userInfo.email) {
+        try {
+          // メールアドレスから Slack ユーザーを検索
+          const lookupRes = await fetch(
+            `https://slack.com/api/users.lookupByEmail?email=${encodeURIComponent(userInfo.email)}`,
+            {
+              headers: { Authorization: `Bearer ${token}` }
+            }
+          );
+          const lookupData = await lookupRes.json();
+          if (lookupData.ok && lookupData.user) {
+            mention = `<@${lookupData.user.id}> `;
+          }
+        } catch (e) {
+          console.error('Slack lookup error', e);
+        }
+      }
+
       // Slack API へメッセージを送信
       const res = await fetch('https://slack.com/api/chat.postMessage', {
         method: 'POST',
@@ -41,7 +65,7 @@ document.getElementById('send').addEventListener('click', async () => {
           'Content-Type': 'application/json; charset=utf-8',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ channel, text: `${url}\n${comment}` })
+        body: JSON.stringify({ channel, text: `${mention}\n${url}\n${comment}` })
       });
       const data = await res.json();
       if (data.ok) {
