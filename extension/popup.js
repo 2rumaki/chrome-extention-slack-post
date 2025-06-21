@@ -6,8 +6,22 @@ document.getElementById('send').addEventListener('click', async () => {
   const comment = document.getElementById('comment').value;
 
   chrome.storage.local.get(['token', 'channel'], async (items) => {
-    const token = items.token;
-    const channel = items.channel;
+    let token = null;
+    let channel = null;
+    if (items.token) {
+      try {
+        token = await decryptText(items.token);
+      } catch (e) {
+        console.error('Failed to decrypt token', e);
+      }
+    }
+    if (items.channel) {
+      try {
+        channel = await decryptText(items.channel);
+      } catch (e) {
+        console.error('Failed to decrypt channel', e);
+      }
+    }
     if (!token || !channel) {
       statusEl.textContent = 'Set Slack token and channel in options.';
       return;
