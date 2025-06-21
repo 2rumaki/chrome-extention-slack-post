@@ -1,7 +1,6 @@
 # chrome-extension-slack-post
 
 この Chrome 拡張機能は、現在のタブの URL とコメントを Slack ボットトークンを用いて指定のチャンネルに投稿します。
-アイコン画像は `extension/icon` ディレクトリに含まれており、必要に応じて差し替えられます。
 
 ## セットアップ
 1. **chat:write** 権限を持つ Slack アプリを作成し、ワークスペースにインストールします。
