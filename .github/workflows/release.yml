@@ -28,7 +28,7 @@ jobs:
       - name: Commit updated manifest
         run: |
           git add extension/manifest.json
-          git commit -m "chore: manifest.json をタグバージョンに更新"
+          git commit -m "chore: manifest.json のバージョンを更新"
           git push
       - name: Package extension
         run: |
