@@ -2,6 +2,7 @@ name: Release Extension
 
 on:
   workflow_dispatch:
+    description: "Chrome拡張機能をリリースするワークフローです"
 permissions:
   contents: write
 
