@@ -1,7 +1,7 @@
 /* ポップアップ全体のスタイル */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f5f7fa;
+  background-color: #e8f5e9;
   margin: 0;
   width: 240px;
 }
@@ -9,6 +9,7 @@ body {
 /* 入力エリアを囲むコンテナ */
 #container {
   padding: 15px;
+  border: 1px solid #a5d6a7;
   box-sizing: border-box;
 }
 
@@ -28,7 +29,7 @@ button {
   width: 100%;
   padding: 8px;
   margin-top: 10px;
-  background-color: #007bff;
+  background-color: #4caf50;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -37,7 +38,7 @@ button {
 
 /* ボタンの hover 時のスタイル */
 button:hover {
-  background-color: #0056b3;
+  background-color: #388e3c;
 }
 
 /* 投稿結果メッセージの表示領域 */
