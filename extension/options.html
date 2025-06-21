@@ -2,19 +2,17 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <style>
-    body { font-family: Arial, sans-serif; padding:10px; }
-    input { width:100%; }
-    button { margin-top:5px; }
-  </style>
+  <link rel="stylesheet" href="options.css">
 </head>
 <body>
-  <label>Slack Bot Token</label>
-  <input id="token" type="password" placeholder="xoxb-..." />
-  <label>Channel ID</label>
-  <input id="channel" type="text" placeholder="C12345678" />
-  <button id="save">Save</button>
-  <span id="status"></span>
+  <div id="container">
+    <label>Slack Bot Token</label>
+    <input id="token" type="password" placeholder="xoxb-..." />
+    <label>Channel ID</label>
+    <input id="channel" type="text" placeholder="C12345678" />
+    <button id="save">Save</button>
+    <span id="status"></span>
+  </div>
   <script src="crypto.js"></script>
   <script src="options.js"></script>
 </body>
