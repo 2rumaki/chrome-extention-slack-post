@@ -5,7 +5,7 @@ document.getElementById('send').addEventListener('click', async () => {
   const url = tab.url;
   const comment = document.getElementById('comment').value;
 
-  chrome.storage.sync.get(['token', 'channel'], async (items) => {
+  chrome.storage.local.get(['token', 'channel'], async (items) => {
     const token = items.token;
     const channel = items.channel;
     if (!token || !channel) {
