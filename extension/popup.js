@@ -10,10 +10,11 @@ document.getElementById('send').addEventListener('click', async () => {
   // 入力されたコメントを取得
   const comment = document.getElementById('comment').value;
 
-  // 保存されているトークンとチャンネル ID を取得
-  chrome.storage.local.get(['token', 'channel'], async (items) => {
+  // 保存されているトークン、チャンネル ID、メンバー ID を取得
+  chrome.storage.local.get(['token', 'channel', 'member'], async (items) => {
     let token = null;
     let channel = null;
+    let member = null;
     if (items.token) {
       try {
         token = await decryptText(items.token);
@@ -28,12 +29,21 @@ document.getElementById('send').addEventListener('click', async () => {
         console.error('Failed to decrypt channel', e);
       }
     }
-    // トークンまたはチャンネル ID が未設定の場合はエラー表示
-    if (!token || !channel) {
-      statusEl.textContent = 'Set Slack token and channel in options.';
+    if (items.member) {
+      try {
+        member = await decryptText(items.member);
+      } catch (e) {
+        console.error('Failed to decrypt member', e);
+      }
+    }
+    // 必要な情報が未設定の場合はエラー表示
+    if (!token || !channel || !member) {
+      statusEl.textContent = 'Set Slack token, channel and member in options.';
       return;
     }
     try {
+      const mention = `<@${member}>`;
+
       // Slack API へメッセージを送信
       const res = await fetch('https://slack.com/api/chat.postMessage', {
         method: 'POST',
@@ -41,7 +51,7 @@ document.getElementById('send').addEventListener('click', async () => {
           'Content-Type': 'application/json; charset=utf-8',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ channel, text: `${url}\n${comment}` })
+        body: JSON.stringify({ channel, text: `${mention}\n${url}\n${comment}` })
       });
       const data = await res.json();
       if (data.ok) {
