@@ -5,15 +5,15 @@
 // 保存ボタンが押された時の処理
 document.getElementById('save').addEventListener('click', async () => {
   const token = document.getElementById('token').value;
-  const channel = document.getElementById('channel').value;
-  const member = document.getElementById('member').value;
+  const channelId = document.getElementById('channel').value;
+  const memberId = document.getElementById('member').value;
 
   // ローカルストレージに保存する前に暗号化する
   const encToken = await encryptText(token);
-  const encChannel = await encryptText(channel);
-  const encMember = await encryptText(member);
+  const encChannelId = await encryptText(channelId);
+  const encMemberId = await encryptText(memberId);
 
-  chrome.storage.local.set({ token: encToken, channel: encChannel, member: encMember }, () => {
+  chrome.storage.local.set({ token: encToken, channel: encChannelId, member: encMemberId }, () => {
     const statusEl = document.getElementById('status');
     statusEl.textContent = 'Saved!';
     statusEl.style.color = '#28a745';
@@ -23,29 +23,16 @@ document.getElementById('save').addEventListener('click', async () => {
   });
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  // ページ読み込み時に保存済みの値を復号して入力欄に表示する
-  chrome.storage.local.get(['token', 'channel', 'member'], async (items) => {
-    if (items.token) {
-      try {
-        document.getElementById('token').value = await decryptText(items.token);
-      } catch (e) {
-        console.error('Failed to decrypt token', e);
-      }
-    }
-    if (items.channel) {
-      try {
-        document.getElementById('channel').value = await decryptText(items.channel);
-      } catch (e) {
-        console.error('Failed to decrypt channel', e);
-      }
-    }
-    if (items.member) {
-      try {
-        document.getElementById('member').value = await decryptText(items.member);
-      } catch (e) {
-        console.error('Failed to decrypt member', e);
-      }
-    }
-  });
+document.addEventListener('DOMContentLoaded', async () => {
+  // 保存済みのトークン等を読み込んでフォームに表示
+  const { token, channelId, memberId } = await loadCredentials();
+  if (token) {
+    document.getElementById('token').value = token;
+  }
+  if (channelId) {
+    document.getElementById('channel').value = channelId;
+  }
+  if (memberId) {
+    document.getElementById('member').value = memberId;
+  }
 });
