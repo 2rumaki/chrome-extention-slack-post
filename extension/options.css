@@ -1,7 +1,7 @@
 /* オプションページ全体のスタイル */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f5f7fa;
+  background-color: #e8f5e9;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,6 +11,7 @@ body {
 /* 入力フォームを囲むコンテナ */
 #container {
   background: #fff;
+  border: 1px solid #a5d6a7;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -37,7 +38,7 @@ button {
   width: 100%;
   padding: 8px;
   margin-top: 15px;
-  background-color: #007bff;
+  background-color: #4caf50;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -45,7 +46,7 @@ button {
 }
 /* ボタンにマウスを乗せたときの色変更 */
 button:hover {
-  background-color: #0056b3;
+  background-color: #388e3c;
 }
 /* 保存完了メッセージの表示領域 */
 #status {
