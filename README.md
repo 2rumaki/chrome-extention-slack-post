@@ -1,15 +1,13 @@
 # chrome-extension-slack-post
 
-This Chrome extension posts the current tab URL and a comment to a Slack channel using a Slack bot token.
-Icons are not included in this repository; add your own icon files before loading the extension.
+この Chrome 拡張機能は、現在のタブの URL とコメントを Slack ボットトークンを用いて指定のチャンネルに投稿します。
+アイコン画像はこのリポジトリには含まれていません。拡張機能を読み込む前にアイコンファイルを追加してください。
 
-## Setup
-1. Create a Slack App with the **chat:write** permission and install it to your workspace.
-2. Obtain the Bot User OAuth Token (starts with `xoxb-`) and the target channel ID.
-3. Load the `extension` directory as an unpacked extension in Chrome. If you
-   have your own icons, place them inside the directory and reference them in
-   `manifest.json`.
-4. Open the extension options and enter your token and channel ID.
+## セットアップ
+1. **chat:write** 権限を持つ Slack アプリを作成し、ワークスペースにインストールします。
+2. Bot User OAuth Token（`xoxb-` から始まるもの）と投稿先のチャンネル ID を取得します。
+3. `extension` ディレクトリを Chrome で「パッケージ化されていない拡張機能」として読み込みます。独自のアイコンを使用する場合は、このディレクトリに配置し `manifest.json` で参照してください。
+4. 拡張機能のオプションページを開き、トークンとチャンネル ID を入力します。
 
-## Usage
-- Click the extension icon, enter a comment, and press **Post to Slack**. The URL of the active tab and your comment will be sent to Slack.
+## 使い方
+- 拡張機能のアイコンをクリックし、コメントを入力して **Post to Slack** を押します。アクティブなタブの URL とコメントが Slack に送信されます。
