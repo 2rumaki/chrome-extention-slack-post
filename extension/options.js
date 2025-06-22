@@ -7,17 +7,25 @@ document.getElementById('save').addEventListener('click', async () => {
   const statusEl = document.getElementById('status');
   try {
     const token = document.getElementById('token').value;
-    const channelId = document.getElementById('channel').value;
     const memberId = document.getElementById('member').value;
 
-    // ローカルストレージに保存する前に暗号化する
+    const channelRows = document.querySelectorAll('.channel-row');
+    const channels = [];
+    channelRows.forEach(row => {
+      const name = row.querySelector('.channel-name').value;
+      const id = row.querySelector('.channel-id').value;
+      if (name && id) {
+        channels.push({ name, id });
+      }
+    });
+
     const encToken = await encryptText(token);
-    const encChannelId = await encryptText(channelId);
     const encMemberId = await encryptText(memberId);
+    const encChannels = await encryptText(JSON.stringify(channels));
 
     await chrome.storage.local.set({
       token: encToken,
-      channel: encChannelId,
+      channels: encChannels,
       member: encMemberId,
     });
 
@@ -35,15 +43,45 @@ document.getElementById('save').addEventListener('click', async () => {
   }
 });
 
+function addChannelRow(name = '', id = '') {
+  const container = document.getElementById('channels');
+  const row = document.createElement('div');
+  row.className = 'channel-row';
+
+  const nameInput = document.createElement('input');
+  nameInput.placeholder = 'Name';
+  nameInput.value = name;
+  nameInput.className = 'channel-name';
+  row.appendChild(nameInput);
+
+  const idInput = document.createElement('input');
+  idInput.placeholder = 'C12345678';
+  idInput.value = id;
+  idInput.className = 'channel-id';
+  row.appendChild(idInput);
+
+  const removeBtn = document.createElement('button');
+  removeBtn.textContent = 'X';
+  removeBtn.type = 'button';
+  removeBtn.className = 'remove-channel';
+  removeBtn.addEventListener('click', () => row.remove());
+  row.appendChild(removeBtn);
+
+  container.appendChild(row);
+}
+
+document.getElementById('addChannel').addEventListener('click', () => {
+  addChannelRow();
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    // 保存済みのトークン等を読み込んでフォームに表示
-    const { token, channelId, memberId } = await loadCredentials();
+    const { token, channels, memberId } = await loadCredentials();
     if (token) {
       document.getElementById('token').value = token;
     }
-    if (channelId) {
-      document.getElementById('channel').value = channelId;
+    if (Array.isArray(channels)) {
+      channels.forEach(ch => addChannelRow(ch.name, ch.id));
     }
     if (memberId) {
       document.getElementById('member').value = memberId;
