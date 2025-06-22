@@ -7,18 +7,22 @@
 <body>
   <!-- Slack の Bot トークンとチャンネル ID を設定するページ -->
   <div id="container">
-    <!-- Bot トークンの入力欄 -->
-    <label>Slack Bot Token</label>
-    <input id="token" type="password" placeholder="xoxb-..." />
+    <fieldset id="credentials">
+      <legend>Credentials</legend>
+      <!-- Bot トークンの入力欄 -->
+      <label>Slack Bot Token</label>
+      <input id="token" type="password" placeholder="xoxb-..." />
 
-    <!-- チャンネルリスト -->
-    <label>Channels</label>
-    <div id="channels"></div>
-    <button id="addChannel" type="button">Add Channel</button>
+      <!-- 自分の Slack メンバー ID の入力欄 -->
+      <label>Member ID</label>
+      <input id="member" type="text" placeholder="U12345678" />
+    </fieldset>
 
-    <!-- 自分の Slack メンバー ID の入力欄 -->
-    <label>Member ID</label>
-    <input id="member" type="text" placeholder="U12345678" />
+    <fieldset id="channel-settings">
+      <legend>Channels</legend>
+      <div id="channels"></div>
+      <button id="addChannel" type="button">Add Channel</button>
+    </fieldset>
 
     <!-- 設定を保存するボタン -->
     <button id="save">Save</button>
