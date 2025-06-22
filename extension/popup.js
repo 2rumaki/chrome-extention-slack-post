@@ -50,7 +50,19 @@ document.getElementById('send').addEventListener('click', async () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const { channels } = await loadCredentials();
+    const { token, channels, memberId } = await loadCredentials();
+
+    if (!token || !Array.isArray(channels) || channels.length === 0 || !memberId) {
+      const container = document.getElementById('container');
+      container.innerHTML =
+        '<p id="setup-msg">まずオプション画面で Slack の設定を行ってください。</p>' +
+        '<button id="openOptions">オプションを開く</button>';
+      document.getElementById('openOptions').addEventListener('click', () => {
+        chrome.runtime.openOptionsPage();
+      });
+      return;
+    }
+
     const select = document.getElementById('channelSelect');
     select.innerHTML = '';
     if (Array.isArray(channels)) {
