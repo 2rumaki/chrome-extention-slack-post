@@ -104,8 +104,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (token) {
       document.getElementById('token').value = token;
     }
-    if (Array.isArray(channels)) {
+    if (Array.isArray(channels) && channels.length) {
       channels.forEach(ch => addChannelRow(ch.name, ch.id));
+    } else {
+      addChannelRow();
     }
     if (memberId) {
       document.getElementById('member').value = memberId;
