@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const { token, channels, memberId } = await loadCredentials();
 
-    if (!token && (!Array.isArray(channels) || channels.length === 0) && !memberId) {
+    if (!token || !Array.isArray(channels) || channels.length === 0 || !memberId) {
       const container = document.getElementById('container');
       container.innerHTML =
         '<p id="setup-msg">まずオプション画面で Slack の設定を行ってください。</p>' +
