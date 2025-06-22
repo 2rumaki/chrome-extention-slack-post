@@ -5,8 +5,7 @@
   "version": "0.4.0",
   "permissions": [
     "activeTab",
-    "storage",
-    "identity"
+    "storage"
   ],
   "host_permissions": [
     "https://slack.com/*"
