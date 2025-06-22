@@ -11,10 +11,12 @@ document.getElementById('send').addEventListener('click', async () => {
     const comment = document.getElementById('comment').value;
 
     // 保存されているトークン等を取得
-    const { token, channelId, memberId } = await loadCredentials();
+    const { token, channels, memberId } = await loadCredentials();
+    const channelSelect = document.getElementById('channelSelect');
+    const channelId = channelSelect.value;
     // 必要な情報が未設定の場合はエラー表示
     if (!token || !channelId || !memberId) {
-      statusEl.textContent = 'Set Slack token, channel and member in options.';
+      statusEl.textContent = 'Set Slack token, channels and member in options.';
       return;
     }
 
@@ -43,5 +45,23 @@ document.getElementById('send').addEventListener('click', async () => {
     // ネットワークエラーなど API 通信に失敗した場合
     console.error(e);
     statusEl.textContent = 'Failed to post.';
+  }
+});
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const { channels } = await loadCredentials();
+    const select = document.getElementById('channelSelect');
+    select.innerHTML = '';
+    if (Array.isArray(channels)) {
+      channels.forEach(ch => {
+        const option = document.createElement('option');
+        option.value = ch.id;
+        option.textContent = ch.name;
+        select.appendChild(option);
+      });
+    }
+  } catch (e) {
+    console.error('Failed to load channels', e);
   }
 });
