@@ -5,20 +5,29 @@
 // 保存ボタンが押された時の処理
 document.getElementById('save').addEventListener('click', async () => {
   const statusEl = document.getElementById('status');
+  const token = document.getElementById('token').value.trim();
+  const memberId = document.getElementById('member').value.trim();
+
+  const channelRows = document.querySelectorAll('.channel-row');
+  const channels = [];
+  channelRows.forEach(row => {
+    const name = row.querySelector('.channel-name').value.trim();
+    const id = row.querySelector('.channel-id').value.trim();
+    if (name && id) {
+      channels.push({ name, id });
+    }
+  });
+
+  if (!token || !memberId || channels.length === 0) {
+    statusEl.textContent = '必須項目が未入力です。';
+    statusEl.style.color = '#dc3545';
+    setTimeout(() => {
+      statusEl.textContent = '';
+    }, 1500);
+    return;
+  }
+
   try {
-    const token = document.getElementById('token').value;
-    const memberId = document.getElementById('member').value;
-
-    const channelRows = document.querySelectorAll('.channel-row');
-    const channels = [];
-    channelRows.forEach(row => {
-      const name = row.querySelector('.channel-name').value;
-      const id = row.querySelector('.channel-id').value;
-      if (name && id) {
-        channels.push({ name, id });
-      }
-    });
-
     const encToken = await encryptText(token);
     const encMemberId = await encryptText(memberId);
     const encChannels = await encryptText(JSON.stringify(channels));
