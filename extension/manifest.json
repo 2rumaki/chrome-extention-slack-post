@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Slack Post",
   "description": "Post current page URL and comment to Slack via bot token.",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "permissions": [
     "activeTab",
     "storage"
