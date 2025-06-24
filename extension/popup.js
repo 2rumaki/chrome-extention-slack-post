@@ -11,16 +11,21 @@ document.getElementById('send').addEventListener('click', async () => {
     const comment = document.getElementById('comment').value;
 
     // 保存されているトークン等を取得
-    const { token, channels, memberId } = await loadCredentials();
+    const { token, channels, memberId, mention } = await loadCredentials();
     const channelSelect = document.getElementById('channelSelect');
     const channelId = channelSelect.value;
     // 必要な情報が未設定の場合はエラー表示
-    if (!token || !channelId || !memberId) {
+    if (!token || !channelId || (mention !== false && !memberId)) {
       statusEl.textContent = 'Set Slack token, channels and member in options.';
       return;
     }
 
-    const mention = `<@${memberId}>`;
+    const parts = [];
+    if (mention !== false) {
+      parts.push(`<@${memberId}>`);
+    }
+    parts.push(url);
+    parts.push(comment);
 
     // Slack API へメッセージを送信
     const res = await fetch('https://slack.com/api/chat.postMessage', {
@@ -29,7 +34,7 @@ document.getElementById('send').addEventListener('click', async () => {
         'Content-Type': 'application/json; charset=utf-8',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ channel: channelId, text: `${mention}\n${url}\n${comment}` }),
+      body: JSON.stringify({ channel: channelId, text: parts.join('\n') }),
     });
     const data = await res.json();
     if (data.ok) {
@@ -50,9 +55,14 @@ document.getElementById('send').addEventListener('click', async () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const { token, channels, memberId } = await loadCredentials();
+    const { token, channels, memberId, mention } = await loadCredentials();
 
-    if (!token || !Array.isArray(channels) || channels.length === 0 || !memberId) {
+    if (
+      !token ||
+      !Array.isArray(channels) ||
+      channels.length === 0 ||
+      (mention !== false && !memberId)
+    ) {
       const container = document.getElementById('container');
       container.innerHTML =
         '<p id="setup-msg">まずオプション画面で Slack の設定を行ってください。</p>' +

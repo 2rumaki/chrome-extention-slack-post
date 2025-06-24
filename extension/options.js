@@ -7,6 +7,7 @@ document.getElementById('save').addEventListener('click', async () => {
   const statusEl = document.getElementById('status');
   const token = document.getElementById('token').value.trim();
   const memberId = document.getElementById('member').value.trim();
+  const mentionEnabled = document.getElementById('mentionToggle').checked;
 
   const channelRows = document.querySelectorAll('.channel-row');
   const channels = [];
@@ -36,6 +37,7 @@ document.getElementById('save').addEventListener('click', async () => {
       token: encToken,
       channels: encChannels,
       member: encMemberId,
+      mention: mentionEnabled,
     });
 
     statusEl.textContent = 'Saved!';
@@ -109,7 +111,7 @@ document.getElementById('addChannel').addEventListener('click', () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const { token, channels, memberId } = await loadCredentials();
+    const { token, channels, memberId, mention } = await loadCredentials();
     if (token) {
       document.getElementById('token').value = token;
     }
@@ -121,6 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (memberId) {
       document.getElementById('member').value = memberId;
     }
+    document.getElementById('mentionToggle').checked = Boolean(mention);
   } catch (e) {
     console.error('Failed to load saved credentials', e);
   }

@@ -5,6 +5,7 @@ async function loadCredentials() {
       'token',
       'channels',
       'member',
+      'mention',
     ]);
 
     const token = items.token ? await decryptText(items.token) : null;
@@ -12,11 +13,12 @@ async function loadCredentials() {
       ? JSON.parse(await decryptText(items.channels))
       : null;
     const memberId = items.member ? await decryptText(items.member) : null;
+    const mention = 'mention' in items ? items.mention : null;
 
-    return { token, channels, memberId };
+    return { token, channels, memberId, mention };
   } catch (e) {
     console.error('Failed to load credentials', e);
-    return { token: null, channels: null, memberId: null };
+    return { token: null, channels: null, memberId: null, mention: null };
   }
 }
 
