@@ -5,25 +5,73 @@
 // 保存ボタンが押された時の処理
 document.getElementById('save').addEventListener('click', async () => {
   const statusEl = document.getElementById('status');
-  const token = document.getElementById('token').value.trim();
-  const memberId = document.getElementById('member').value.trim();
+  const tokenEl = document.getElementById('token');
+  const memberEl = document.getElementById('member');
+  const token = tokenEl.value.trim();
+  const memberId = memberEl.value.trim();
+
+  // 入力欄のエラースタイルをリセット
+  tokenEl.classList.remove('error');
+  memberEl.classList.remove('error');
+  document.querySelectorAll('.channel-name').forEach(el => el.classList.remove('error'));
+  document.querySelectorAll('.channel-id').forEach(el => el.classList.remove('error'));
 
   const channelRows = document.querySelectorAll('.channel-row');
   const channels = [];
   channelRows.forEach(row => {
-    const name = row.querySelector('.channel-name').value.trim();
-    const id = row.querySelector('.channel-id').value.trim();
+    const nameInput = row.querySelector('.channel-name');
+    const idInput = row.querySelector('.channel-id');
+    const name = nameInput.value.trim();
+    const id = idInput.value.trim();
     if (name && id) {
       channels.push({ name, id });
     }
   });
 
-  if (!token || !memberId || channels.length === 0) {
-    statusEl.textContent = '必須項目が未入力です。';
+  // 未入力項目をハイライト
+  let hasError = false;
+  if (!token) {
+    tokenEl.classList.add('error');
+    hasError = true;
+  }
+  if (!memberId) {
+    memberEl.classList.add('error');
+    hasError = true;
+  }
+  if (channels.length === 0) {
+    document.querySelectorAll('.channel-name').forEach(el => el.classList.add('error'));
+    document.querySelectorAll('.channel-id').forEach(el => el.classList.add('error'));
+    hasError = true;
+  }
+
+  if (hasError) {
+    statusEl.textContent = '必須項目を入力してください。';
     statusEl.style.color = '#dc3545';
     setTimeout(() => {
       statusEl.textContent = '';
-    }, 1500);
+    }, 5000);
+    return;
+  }
+
+  // トークンの有効性チェック
+  try {
+    const res = await fetch('https://slack.com/api/auth.test', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    if (!data.ok) {
+      statusEl.textContent = 'トークンが無効です。';
+      statusEl.style.color = '#dc3545';
+      return;
+    }
+  } catch (e) {
+    console.error('Token validation failed', e);
+    statusEl.textContent = 'トークン確認中にエラーが発生しました。';
+    statusEl.style.color = '#dc3545';
     return;
   }
 
@@ -38,11 +86,11 @@ document.getElementById('save').addEventListener('click', async () => {
       member: encMemberId,
     });
 
-    statusEl.textContent = 'Saved!';
+    statusEl.textContent = '保存しました。';
     statusEl.style.color = '#28a745';
   } catch (e) {
     console.error('Failed to save credentials', e);
-    statusEl.textContent = 'Failed to save.';
+    statusEl.textContent = '保存に失敗しました。';
     statusEl.style.color = '#dc3545';
   } finally {
     // 保存メッセージは1.5秒後に消す

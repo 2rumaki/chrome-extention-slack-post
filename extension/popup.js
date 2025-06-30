@@ -1,7 +1,7 @@
 // ポップアップから現在のタブの URL とコメントを Slack に送信する
 document.getElementById('send').addEventListener('click', async () => {
   const statusEl = document.getElementById('status');
-  statusEl.textContent = 'Sending...';
+  statusEl.textContent = '送信中...';
   try {
     // アクティブなタブの URL を取得
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -16,7 +16,7 @@ document.getElementById('send').addEventListener('click', async () => {
     const channelId = channelSelect.value;
     // 必要な情報が未設定の場合はエラー表示
     if (!token || !channelId || !memberId) {
-      statusEl.textContent = 'Set Slack token, channels and member in options.';
+      statusEl.textContent = 'Slackトークン、チャンネル、メンバーIDをオプションで設定してください。';
       return;
     }
 
@@ -34,17 +34,17 @@ document.getElementById('send').addEventListener('click', async () => {
     const data = await res.json();
     if (data.ok) {
       // 正常に投稿できた場合
-      statusEl.textContent = 'Posted!';
+      statusEl.textContent = '投稿しました。';
       document.getElementById('comment').value = '';
     } else {
       // API からエラーが返ってきた場合
       console.error('Slack API error', data);
-      statusEl.textContent = 'Failed: ' + (data.error || 'unknown error');
+      statusEl.textContent = '投稿に失敗しました: ' + (data.error || '不明なエラー');
     }
   } catch (e) {
     // ネットワークエラーなど API 通信に失敗した場合
     console.error(e);
-    statusEl.textContent = 'Failed to post.';
+    statusEl.textContent = '投稿に失敗しました。ネットワークを確認してください。';
   }
 });
 
