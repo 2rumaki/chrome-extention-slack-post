@@ -10,13 +10,13 @@ function atobBytes(str) {
 
 // 生成済みの暗号鍵を取得する
 async function getStoredKey() {
-  const items = await chrome.storage.local.get('encKey');
+  const items = await chrome.storage.session.get('encKey');
   return items.encKey;
 }
 
 // 暗号鍵を保存する
 async function setStoredKey(key) {
-  await chrome.storage.local.set({ encKey: key });
+  await chrome.storage.session.set({ encKey: key });
 }
 
 // 暗号処理に使用する鍵を取得する
